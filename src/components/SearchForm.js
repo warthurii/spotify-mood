@@ -1,13 +1,12 @@
-import "./App.css";
+import "../App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import { Input, List, Avatar, Card } from "antd";
 import "antd/dist/antd.css";
-import { Button } from "react-bootstrap";
 
-const SearchForm = ({ token }) => {
+export const SearchForm = ({ token, setItem, searching, setSearching }) => {
   const [searchType, setSearchType] = useState("0");
   const [searchResults, setSearchResults] = useState(null);
 
@@ -24,14 +23,15 @@ const SearchForm = ({ token }) => {
   };
 
   const handleClick = (e, key) => {
-    console.log(e);
-    console.log(key);
+    setItem(key);
+    setSearching(false);
   };
+
+  const handleTextClick = () => {
+    setSearching(!searching);
+  };
+
   const getTrackSearchResults = (query) => {
-    const searchQuery = query;
-    console.log("Search Query: " + searchQuery.toString());
-    console.log("Token: " + token);
-    console.log(createUrl(searchType, query));
     fetch(createUrl(searchType, query), {
       method: "GET",
       headers: {
@@ -46,7 +46,6 @@ const SearchForm = ({ token }) => {
       })
       .then((response) => response.json())
       .then(({ tracks }) => {
-        console.log(tracks.items[0].name);
         const results = [];
         tracks.items.forEach((element) => {
           let artists = [];
@@ -78,9 +77,6 @@ const SearchForm = ({ token }) => {
 
   const getAlbumSearchResults = (query) => {
     const searchQuery = query;
-    console.log("Search Query: " + searchQuery.toString());
-    console.log("Token: " + token);
-    console.log(createUrl(searchType, query));
     fetch(createUrl(searchType, query), {
       method: "GET",
       headers: {
@@ -95,7 +91,6 @@ const SearchForm = ({ token }) => {
       })
       .then((response) => response.json())
       .then(({ albums }) => {
-        console.log(albums.items[0].name);
         const results = [];
         albums.items.forEach((element) => {
           let artists = [];
@@ -160,11 +155,12 @@ const SearchForm = ({ token }) => {
         </Form.Select>
       </Col>
       <Col xs={8}>
-        <Form.Control onChange={(e) => handleChange(e.target.value)} />
-        <SearchCards />
+        <Form.Control
+          onClick={handleTextClick}
+          onChange={(e) => handleChange(e.target.value)}
+        />
+        {searching && <SearchCards />}
       </Col>
     </>
   );
 };
-
-export default SearchForm;

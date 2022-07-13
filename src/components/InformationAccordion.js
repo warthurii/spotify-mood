@@ -1,7 +1,7 @@
-import "./App.css";
+import "../App.css";
 import Accordion from "react-bootstrap/Accordion";
 
-const InformationAccordion = () => {
+export const InformationAccordion = () => {
   return (
     <Accordion>
       <Accordion.Item eventKey="0">
@@ -32,5 +32,3 @@ const InformationAccordion = () => {
     </Accordion>
   );
 };
-
-export default InformationAccordion;

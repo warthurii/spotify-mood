@@ -3,14 +3,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { authEndpoint, clientId, redirectUri, scope } from "./config";
 import { Row, Col, Button, Container, Form } from "react-bootstrap";
-import InformationAccordion from "./InformationAccordion.js";
+import { InformationAccordion, SearchForm, Plot } from "./components";
 import hash from "./hash";
-import SearchForm from "./SearchForm";
-import Plot from "./plot";
 
 function App() {
   const [token, setToken] = useState(null);
   const [item, setItem] = useState(null);
+  const [searching, setSearching] = useState(false);
   const [tokenType, setTokenType] = useState(null);
   const [expiresIn, setTokenExpiresIn] = useState(null);
   const [val, setVal] = useState("0");
@@ -19,7 +18,6 @@ function App() {
     let mToken = hash.access_token;
     if (mToken) {
       setToken(mToken);
-      console.log("mToken: " + mToken);
     }
   });
 
@@ -34,7 +32,6 @@ function App() {
   };
 
   const selectChangeHandler = (e) => {
-    console.log(e);
     setVal(e.target.value);
   };
 
@@ -51,7 +48,7 @@ function App() {
               size="lg"
               onClick={handleLogin}
             >
-              {token ? "Login To Spotify" : "Login To Spotify First!"}
+              {token ? "Have Fun!" : "Login To Spotify First!"}
             </Button>
           </Col>
         </Row>
@@ -61,11 +58,19 @@ function App() {
           </Col>
         </Row>
         <Row>
-          <SearchForm token={token} setItem={setItem} />
+          <SearchForm
+            token={token}
+            setItem={setItem}
+            searching={searching}
+            setSearching={setSearching}
+          />
         </Row>
-        {item ?? (
-          <Row>
-            <Plot />
+
+        {!!item && (
+          <Row className="mt-3 ml-0 justify-content-md-center">
+            <>
+              <Plot token={token} item={item} />
+            </>
           </Row>
         )}
         <Row className="mt-3">
