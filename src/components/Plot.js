@@ -40,16 +40,14 @@ export const Plot = ({ token, item }) => {
   }, [item]);
 
   return (
-    <ResponsiveContainer height={500} width={500}>
-      <ScatterChart>
-        <CartesianGrid />
-        <XAxis type="number" dataKey="x" domain={[-100, 100]} />
-        <YAxis type="number" dataKey="y" domain={[-100, 100]} />
-        <Scatter data={data} fill="green" />
-        <ReferenceLine y={0} stroke="#000000" />
-        <ReferenceLine x={0} stroke="#000000" />
-        <ReferenceLine />
-      </ScatterChart>
-    </ResponsiveContainer>
+    <ScatterChart height={500} width={500}>
+      <CartesianGrid />
+      <XAxis type="number" dataKey="x" domain={[-100, 100]} />
+      <YAxis type="number" dataKey="y" domain={[-100, 100]} />
+      <Scatter data={data} fill="green" />
+      <ReferenceLine y={0} stroke="#000000" />
+      <ReferenceLine x={0} stroke="#000000" />
+      <ReferenceLine />
+    </ScatterChart>
   );
 };

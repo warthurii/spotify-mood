@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import { Input, List, Avatar, Card } from "antd";
-import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 
 export const SearchForm = ({ token, setItem, searching, setSearching }) => {
   const [searchType, setSearchType] = useState("0");
