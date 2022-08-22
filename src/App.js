@@ -5,6 +5,7 @@ import { authEndpoint, clientId, redirectUri, scope } from "./config";
 import { Row, Col, Button, Container, Form } from "react-bootstrap";
 import { InformationAccordion, SearchForm, Plot } from "./components";
 import hash from "./hash";
+import { ResponsiveContainer } from "recharts";
 
 function App() {
   const [token, setToken] = useState(null);
@@ -13,6 +14,7 @@ function App() {
   const [tokenType, setTokenType] = useState(null);
   const [expiresIn, setTokenExpiresIn] = useState(null);
   const [val, setVal] = useState("0");
+  const [data, setData] = useState(null);
 
   useEffect(() => {
     let mToken = hash.access_token;
@@ -63,12 +65,13 @@ function App() {
             setItem={setItem}
             searching={searching}
             setSearching={setSearching}
+            setData={setData}
           />
         </Row>
 
         {!!item && (
           <Row className="mt-3 ml-0 justify-content-md-center">
-            <Plot token={token} item={item} />
+              <Plot token={token} item={item} data={data} />
           </Row>
         )}
         <Row className="mt-3">

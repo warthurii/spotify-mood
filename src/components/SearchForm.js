@@ -5,10 +5,13 @@ import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import { Input, List, Avatar, Card } from "antd";
 import "antd/dist/antd.min.css";
+import { getAlbumData, getItemObject, getTrackData } from "../utils";
+import { getAudioFeaturesTrack } from "../api";
 
-export const SearchForm = ({ token, setItem, searching, setSearching }) => {
+export const SearchForm = ({ token, setItem, searching, setSearching, setData }) => {
   const [searchType, setSearchType] = useState("0");
   const [searchResults, setSearchResults] = useState(null);
+  const { Search } = Input;
 
   const selectChangeHandler = (e) => {
     setSearchType(e.target.value);
@@ -23,8 +26,9 @@ export const SearchForm = ({ token, setItem, searching, setSearching }) => {
   };
 
   const handleClick = (e, key) => {
-    setItem(key);
     setSearching(false);
+    getItemObject(token, key).then((x) => {setItem(x)});
+    key.includes("track") ?  getTrackData(token, key).then((x) => {setData([x])}) : getAlbumData(token, key).then((x) => setData(x));
   };
 
   const handleTextClick = () => {
