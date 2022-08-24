@@ -5,11 +5,17 @@ import { useState } from "react";
 import Col from "react-bootstrap/Col";
 import { Input, List, Avatar, Card } from "antd";
 import "antd/dist/antd.min.css";
-import { getAlbumData, getItemObject, getTrackData } from "../utils";
-import { getAudioFeaturesTrack } from "../api";
+import {
+  getAlbumData,
+  getItemObject,
+  getTrackData,
+  getPlaylistData,
+  createUrl,
+} from '../utils';
+import { getAudioFeaturesTrack } from '../api';
 
 export const SearchForm = ({ token, setItem, searching, setSearching, setData }) => {
-  const [searchType, setSearchType] = useState("0");
+  const [searchType, setSearchType] = useState('0');
   const [searchResults, setSearchResults] = useState(null);
   const { Search } = Input;
 
@@ -18,17 +24,29 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
   };
 
   const handleChange = (query) => {
-    if (searchType == "0") {
+    if (searchType == '0') {
       getTrackSearchResults(query);
-    } else if (searchType == "1") {
+    } else if (searchType == '1') {
       getAlbumSearchResults(query);
+    } else if (searchType == '2') {
+      getPlaylistSearchResults(query);
     }
   };
 
   const handleClick = (e, key) => {
     setSearching(false);
-    getItemObject(token, key).then((x) => {setItem(x)});
-    key.includes("track") ?  getTrackData(token, key).then((x) => {setData([x])}) : getAlbumData(token, key).then((x) => setData(x));
+    getItemObject(token, key).then((x) => {
+      setItem(x);
+    });
+    if (key.includes('track')) {
+      getTrackData(token, key).then((x) => {
+        setData([x]);
+      });
+    } else if (key.includes('album')) {
+      getAlbumData(token, key).then((x) => setData(x));
+    } else if (key.includes('playlist')) {
+      getPlaylistData(token, key).then((x) => setData(x));
+    }
   };
 
   const handleTextClick = () => {
@@ -36,15 +54,15 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
   };
 
   const getTrackSearchResults = (query) => {
-    fetch(createUrl(searchType, query), {
-      method: "GET",
+    fetch(createUrl('track', query), {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
         if (!response.ok) {
-          throw Error("Response Not Ok");
+          throw Error('Response Not Ok');
         }
         return response;
       })
@@ -60,16 +78,16 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
               onClick={(e) => handleClick(e, element.uri)}
             >
               <List.Item.Meta
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
                 avatar={
                   <Avatar
-                    shape="square"
-                    size="large"
+                    shape='square'
+                    size='large'
                     src={element.album.images[0].url}
                   />
                 }
-                title={<p href="https://ant.design">{element.name}</p>}
-                description={artists.join(", ")}
+                title={<p href='https://ant.design'>{element.name}</p>}
+                description={artists.join(', ')}
               />
             </List.Item>
           );
@@ -81,15 +99,15 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
 
   const getAlbumSearchResults = (query) => {
     const searchQuery = query;
-    fetch(createUrl(searchType, query), {
-      method: "GET",
+    fetch(createUrl('album', query), {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then((response) => {
         if (!response.ok) {
-          throw Error("Response Not Ok");
+          throw Error('Response Not Ok');
         }
         return response;
       })
@@ -105,16 +123,16 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
               onClick={(e) => handleClick(e, element.uri)}
             >
               <List.Item.Meta
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
                 avatar={
                   <Avatar
-                    shape="square"
-                    size="large"
+                    shape='square'
+                    size='large'
                     src={element.images[0].url}
                   />
                 }
-                title={<p href="https://ant.design">{element.name}</p>}
-                description={artists.join(", ")}
+                title={<p href='https://ant.design'>{element.name}</p>}
+                description={artists.join(', ')}
               />
             </List.Item>
           );
@@ -124,19 +142,63 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
       .catch((error) => setSearchResults(null));
   };
 
-  const createUrl = (type, searchQuery) => {
-    if (type === "0" || type === "1") {
-      const queryUrl = encodeURI(`q=${searchQuery}`);
-      const typeUrl = encodeURI(type === "0" ? "track" : "album");
-      return `https://api.spotify.com/v1/search?${queryUrl}&type=${typeUrl}`;
-    }
+  const getPlaylistSearchResults = (query) => {
+    const searchQuery = query;
+    fetch(createUrl('playlist', query), {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw Error('Response Not Ok');
+        }
+        return response;
+      })
+      .then((response) => response.json())
+      .then(({ playlists }) => {
+        console.log(playlists);
+        const results = [];
+        playlists.items.forEach((element) => {
+          results.push(
+            <List.Item
+              key={element.uri}
+              onClick={(e) => handleClick(e, element.uri)}
+            >
+              <List.Item.Meta
+                style={{ cursor: 'pointer' }}
+                avatar={
+                  <Avatar
+                    shape='square'
+                    size='large'
+                    src={element.images[0].url}
+                  />
+                }
+                title={<p href='https://ant.design'>{element.name}</p>}
+                description={element.owner.displayName}
+              />
+            </List.Item>
+          );
+        });
+        setSearchResults(results);
+      })
+      .catch((error) => setSearchResults(null));
   };
+
+  // const createUrl = (type, searchQuery) => {
+  //   if (type === "0" || type === "1") {
+  //     const queryUrl = encodeURI(`q=${searchQuery}`);
+  //     const typeUrl = encodeURI(type === "0" ? "track" : "album");
+  //     return `https://api.spotify.com/v1/search?${queryUrl}&type=${typeUrl}`;
+  //   }
+  // };
 
   const SearchCards = () => {
     if (searchResults?.length > 0) {
       return (
         <Card>
-          <List itemLayout="horizontal">{searchResults}</List>
+          <List itemLayout='horizontal'>{searchResults}</List>
         </Card>
       );
     } else {
@@ -151,11 +213,9 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
           value={searchType}
           onChange={(e) => selectChangeHandler(e)}
         >
-          <option value="0">Song</option>
-          <option value="1">Album</option>
-          <option value="2" disabled>
-            Playlist
-          </option>
+          <option value='0'>Song</option>
+          <option value='1'>Album</option>
+          <option value='2'>Playlist</option>
         </Form.Select>
       </Col>
       <Col xs={8}>
@@ -167,4 +227,4 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
       </Col>
     </>
   );
-};
+};;

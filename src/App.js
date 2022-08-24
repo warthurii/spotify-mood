@@ -70,8 +70,8 @@ function App() {
         </Row>
 
         {!!item && (
-          <Row className="mt-3 ml-0 justify-content-md-center">
-              <Plot token={token} item={item} data={data} />
+          <Row className="justify-content-md-center">
+              <Plot item={item} data={data} />
           </Row>
         )}
         <Row className="mt-3">
