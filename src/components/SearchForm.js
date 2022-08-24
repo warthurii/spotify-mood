@@ -158,7 +158,6 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
       })
       .then((response) => response.json())
       .then(({ playlists }) => {
-        console.log(playlists);
         const results = [];
         playlists.items.forEach((element) => {
           results.push(
