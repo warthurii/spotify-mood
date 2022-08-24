@@ -52,10 +52,16 @@ export const getTracksData = async (token, key) => {
 
 export const getAlbumData = async (token, key) => {
   const tracks = await getAlbumsTracks(token, key);
-  const trackPromises = tracks.items.map((track) =>
-    getTrackData(token, track.id)
+  let trackIds = '';
+  tracks.items.forEach(
+    (track) =>
+      (trackIds =
+        trackIds === ''
+          ? trackIds.concat(`${track.id}`)
+          : trackIds.concat(`,${track.id}`))
   );
-  const info = await Promise.all(trackPromises);
+  const tracksPromise = getTracksData(token, trackIds);
+  const info = await tracksPromise;
   return info;
 };
 
@@ -69,7 +75,6 @@ export const getPlaylistData = async (token, key) => {
           ? trackIds.concat(`${item.track.id}`)
           : trackIds.concat(`,${item.track.id}`))
   );
-  console.log(trackIds);
   const tracksPromise = getTracksData(token, trackIds);
   console.log(tracksPromise);
   const info = await tracksPromise;
