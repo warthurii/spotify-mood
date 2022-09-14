@@ -62,6 +62,21 @@ export async function getTrack(token, item) {
   });
 }
 
+export async function getTracks(token, item) {
+  let url = encodeURI(`https://api.spotify.com/v1/tracks?ids=${item}`);
+
+  return fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw Error('Response Not Ok');
+    }
+    return response.json();
+  });
+}
+
 export async function getAlbumsTracks(token, item) {
   let id = item.replace('spotify:album:', '');
   let url = encodeURI(`https://api.spotify.com/v1/albums/${id}/tracks`);

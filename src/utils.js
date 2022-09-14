@@ -1,5 +1,6 @@
 import {
   getTrack,
+  getTracks,
   getAlbum,
   getAudioFeaturesTrack,
   getAlbumsTracks,
@@ -39,13 +40,28 @@ export const getItemObject = (token, key) => {
 
 export const getTrackData = async (token, key) => {
   const features = await getAudioFeaturesTrack(token, key);
-  return { x: features.valence, y: features.energy };
+  const otherData = await getTrack(token, key);
+  return {
+    x: features.valence,
+    y: features.energy,
+    artist: otherData.artists[0].name,
+    name: otherData.name,
+    img: otherData.album.images[0].url,
+  };
 };
 
 export const getTracksData = async (token, key) => {
   const features = await getAudioFeaturesTracks(token, key);
-  return features.audio_features.map((track) => {
-    return { x: track.valence, y: track.energy, key: track.uri };
+  const otherData = await getTracks(token, key);
+  return features.audio_features.map((track, index) => {
+    return {
+      x: track.valence,
+      y: track.energy,
+      artist: otherData.tracks[index].artists[0].name,
+      name: otherData.tracks[index].name,
+      img: otherData.tracks[index].album.images[0].url,
+      key: track.uri,
+    };
   });
 };
 
