@@ -39,9 +39,7 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
       setItem(x);
     });
     if (key.includes('track')) {
-      getTrackData(token, key).then((x) => {
-        setData([x]);
-      });
+      getTrackData(token, key).then((x) => setData([x]));
     } else if (key.includes('album')) {
       getAlbumData(token, key).then((x) => setData(x));
     } else if (key.includes('playlist')) {
@@ -211,6 +209,7 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
         <Form.Select
           value={searchType}
           onChange={(e) => selectChangeHandler(e)}
+          disabled={!token}
         >
           <option value='0'>Song</option>
           <option value='1'>Album</option>
@@ -221,6 +220,7 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
         <Form.Control
           onClick={handleTextClick}
           onChange={(e) => handleChange(e.target.value)}
+          disabled={!token}
         />
         {searching && <SearchCards />}
       </Col>

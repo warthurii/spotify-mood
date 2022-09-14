@@ -41,16 +41,16 @@ function App() {
     <>
       <h1>Spotify Your Mood :(:</h1>
 
-      <Container className="App-body">
+      <Container className='App-body'>
         <br />
-        <Row className="text-center">
+        <Row className='text-center'>
           <Col md>
             <Button
-              variant="outline-dark primary"
-              size="lg"
+              variant='outline-dark primary'
+              size='lg'
               onClick={handleLogin}
             >
-              {token ? "Have Fun!" : "Login To Spotify First!"}
+              {token ? 'Have Fun!' : 'Login To Spotify First!'}
             </Button>
           </Col>
         </Row>
@@ -70,14 +70,15 @@ function App() {
         </Row>
 
         {!!item && (
-          <Row className="justify-content-md-center">
-              <Plot item={item} data={data} />
+          <Row className='justify-content-md-center'>
+            <Plot item={item} data={data} />
           </Row>
         )}
-        <Row className="mt-3">
-          <InformationAccordion></InformationAccordion>
+        <Row className='mt-3 mb-3'>
+          <InformationAccordion />
         </Row>
       </Container>
+      <br />
     </>
   );
 }

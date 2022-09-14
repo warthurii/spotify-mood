@@ -32,6 +32,9 @@ h1 {
   text-align: center;
 }
 
+.mood-label {
+  font-weight: 400;
+}
 
 @keyframes App-logo-spin {
   from {
