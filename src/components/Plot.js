@@ -16,10 +16,6 @@ import { Row, Container, Col } from 'react-bootstrap';
 import { CustomTooltip } from './CustomTooltip';
 
 export const Plot = ({ item, data }) => {
-  useEffect(() => {
-    console.log(data);
-  });
-
   return (
     <>
       <Container>
