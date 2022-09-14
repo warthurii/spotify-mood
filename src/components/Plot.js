@@ -70,6 +70,7 @@ export const Plot = ({ item, data }) => {
             </YAxis>
             <Scatter data={data} fill='green' />
             <Tooltip content={<CustomTooltip />} />
+
             <ReferenceLine y={0.5} stroke='#000000' />
             <ReferenceLine x={0.5} stroke='#000000' />
             <ReferenceLine />
