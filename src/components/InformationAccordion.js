@@ -49,6 +49,7 @@ export const InformationAccordion = () => {
             <a href='https://developer.spotify.com/documentation/web-api/reference/#/operations/get-several-audio-features'>
               Spotify API Documentation
             </a>
+            </p>
             <h4>Method</h4>
             <p>
               As you can the graph works with valence on the X-Axis and energy
@@ -68,7 +69,6 @@ export const InformationAccordion = () => {
                 <b>Angry:</b> Low valence (negative) and high energy.
               </li>
             </ul>
-          </p>
           <h4>Disclaimer</h4>
           <p>
             These two audio metrics from Spotify{' '}
@@ -80,7 +80,7 @@ export const InformationAccordion = () => {
         <Accordion.Header>Who made this?</Accordion.Header>
         <Accordion.Body>
           My name is Will! You can check me out at my{' '}
-          <a href=''>personal site</a>, on{' '}
+          <a href='https://symphonious-salmiakki-887afb.netlify.app'>personal site</a>, on{' '}
           <a href='https://www.linkedin.com/in/will-arthur-614a08171/'>
             Linkedin
           </a>
