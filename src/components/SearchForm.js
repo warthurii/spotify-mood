@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Form from "react-bootstrap/Form";
 import { useState } from "react";
 import Col from "react-bootstrap/Col";
-import { Input, List, Avatar, Card } from "antd";
+import { List, Avatar, Card } from "antd";
 import "antd/dist/antd.min.css";
 import {
   getAlbumData,
@@ -12,23 +12,21 @@ import {
   getPlaylistData,
   createUrl,
 } from '../utils';
-import { getAudioFeaturesTrack } from '../api';
 
 export const SearchForm = ({ token, setItem, searching, setSearching, setData }) => {
   const [searchType, setSearchType] = useState('0');
   const [searchResults, setSearchResults] = useState(null);
-  const { Search } = Input;
 
   const selectChangeHandler = (e) => {
     setSearchType(e.target.value);
   };
 
   const handleChange = (query) => {
-    if (searchType == '0') {
+    if (searchType === '0') {
       getTrackSearchResults(query);
-    } else if (searchType == '1') {
+    } else if (searchType === '1') {
       getAlbumSearchResults(query);
-    } else if (searchType == '2') {
+    } else if (searchType === '2') {
       getPlaylistSearchResults(query);
     }
   };
@@ -96,7 +94,6 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
   };
 
   const getAlbumSearchResults = (query) => {
-    const searchQuery = query;
     fetch(createUrl('album', query), {
       method: 'GET',
       headers: {
@@ -141,7 +138,6 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
   };
 
   const getPlaylistSearchResults = (query) => {
-    const searchQuery = query;
     fetch(createUrl('playlist', query), {
       method: 'GET',
       headers: {
@@ -182,14 +178,6 @@ export const SearchForm = ({ token, setItem, searching, setSearching, setData })
       })
       .catch((error) => setSearchResults(null));
   };
-
-  // const createUrl = (type, searchQuery) => {
-  //   if (type === "0" || type === "1") {
-  //     const queryUrl = encodeURI(`q=${searchQuery}`);
-  //     const typeUrl = encodeURI(type === "0" ? "track" : "album");
-  //     return `https://api.spotify.com/v1/search?${queryUrl}&type=${typeUrl}`;
-  //   }
-  // };
 
   const SearchCards = () => {
     if (searchResults?.length > 0) {

@@ -2,18 +2,14 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import { authEndpoint, clientId, redirectUri, scope } from "./config";
-import { Row, Col, Button, Container, Form } from "react-bootstrap";
+import { Row, Col, Button, Container } from "react-bootstrap";
 import { InformationAccordion, SearchForm, Plot } from "./components";
 import hash from "./hash";
-import { ResponsiveContainer } from "recharts";
 
 function App() {
   const [token, setToken] = useState(null);
   const [item, setItem] = useState(null);
   const [searching, setSearching] = useState(false);
-  const [tokenType, setTokenType] = useState(null);
-  const [expiresIn, setTokenExpiresIn] = useState(null);
-  const [val, setVal] = useState("0");
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -21,7 +17,7 @@ function App() {
     if (mToken) {
       setToken(mToken);
     }
-  });
+  }, []);
 
   const handleLogin = () => {
     var url = authEndpoint;
@@ -31,10 +27,6 @@ function App() {
     url += "&redirect_uri=" + encodeURIComponent(redirectUri);
     // url += "&state=" + encodeURIComponent(state);
     window.location = url;
-  };
-
-  const selectChangeHandler = (e) => {
-    setVal(e.target.value);
   };
 
   return (

@@ -10,7 +10,6 @@ import {
 } from './api';
 
 export const getItemObject = (token, key) => {
-  let response;
   if (key.includes('track')) {
     return getTrack(token, key).then((response) => {
       return {

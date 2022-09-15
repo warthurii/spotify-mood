@@ -1,7 +1,5 @@
 import '../App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useEffect, useState } from 'react';
-import { getAlbum, getAudioFeaturesTrack, getTrack } from '../api';
 import {
   ScatterChart,
   Scatter,
