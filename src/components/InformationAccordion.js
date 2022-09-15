@@ -87,6 +87,13 @@ export const InformationAccordion = () => {
           , or on <a href='https://github.com/warthurii'>Github</a>.
         </Accordion.Body>
       </Accordion.Item>
+      <Accordion.Item eventKey='3'>
+        <Accordion.Header>Not working?</Accordion.Header>
+        <Accordion.Body>
+          <h3>Search results not appearing?</h3>
+          <p>Try relogging in by clicking the button again.</p>
+        </Accordion.Body>
+      </Accordion.Item>
     </Accordion>
   );
 };
